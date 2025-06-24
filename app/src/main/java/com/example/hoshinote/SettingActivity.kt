@@ -73,7 +73,7 @@ fun SettingScreen(onBackClick: () -> Unit = {}) {
             ) {
                 Text(
                     text = "ユーザーネーム変更",
-                    fontSize = 13.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFFB0BEC5),
                 )
