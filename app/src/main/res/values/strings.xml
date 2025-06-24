@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">目標トラッカー</string>
+    <string name="character_content_description">サポートAIキャラクター</string>
+    <string-array name="goal_periods">
+        <item>1週間</item>
+        <item>1ヶ月</item>
+        <item>半年</item>
+        <item>1年</item>
+    </string-array>
+</resources>
