@@ -70,16 +70,15 @@ fun UserInformationInput() {
     val context = LocalContext.current
 
     var username by remember { mutableStateOf("") }
-    var characterAlphaTarget by remember { mutableStateOf(0f) } // 初期は完全に透明
+    var characterAlphaTarget by remember { mutableStateOf(0f) }
     val characterAlpha by animateFloatAsState(
         targetValue = characterAlphaTarget,
         animationSpec = tween(durationMillis = 1000),
         label = "characterAlphaAnimation"
     )
 
-    // 画面が表示されたときにアニメーションを開始
     LaunchedEffect(Unit) {
-        characterAlphaTarget = 1f // アルファ値を1（完全に不透明）に設定してフェードイン開始
+        characterAlphaTarget = 1f
     }
 
     Column(
@@ -95,13 +94,13 @@ fun UserInformationInput() {
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color(0xFA0B0E21))
-                .padding(20.dp, 80.dp),
+                .padding(20.dp, 20.dp),
 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
             Image(
-                painter = painterResource(id = R.drawable.space),
+                painter = painterResource(id = R.drawable.robot),
                 contentDescription = stringResource(R.string.character_content_description),
                 modifier = Modifier
                     .size(120.dp) // 画像サイズ

@@ -7,15 +7,19 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.example.hoshinote.ui.components.CustomHeader
 import androidx.compose.material3.DropdownMenuItem
@@ -44,6 +48,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.input.pointer.motionEventSpy
 
 
 class GoalSettingActivity : ComponentActivity() {
@@ -76,6 +86,16 @@ fun GoalInputScreen() {
     var expanded by remember { mutableStateOf(false)}
     val periods = stringArrayResource(id = R.array.goal_periods)
     var selectedPeriod by remember { mutableStateOf(periods[0]) }
+    var characterAlphaTarget by remember { mutableStateOf(0f) }
+    val characterAlpha by animateFloatAsState(
+        targetValue = characterAlphaTarget,
+        animationSpec = tween(durationMillis = 1000),
+        label = "characterAlphaAnimation"
+    )
+
+    LaunchedEffect(Unit) {
+        characterAlphaTarget = 1f
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -95,6 +115,14 @@ fun GoalInputScreen() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ){
+        Image(
+            painter = painterResource(id = R.drawable.robot),
+            contentDescription = stringResource(R.string.character_content_description),
+            modifier = Modifier
+                .size(90.dp)
+                .padding(bottom = 16.dp)
+                .alpha(characterAlpha)
+        )
         Text(
             text = "こんにちは、${username}さん！",
             fontSize = 15.sp,
@@ -118,7 +146,14 @@ fun GoalInputScreen() {
             OutlinedTextField(
                 value = goalTitle,
                 onValueChange = {goalTitle = it},
-                label = {Text("新しい目標のタイトル")},
+                label = {
+                    Text(
+                        text = "新しい目標のタイトル",
+                        fontSize = 10.sp,
+                        modifier = Modifier.background(Color(0x000B0E21)),
+                    )
+                },
+
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -126,8 +161,8 @@ fun GoalInputScreen() {
                     unfocusedBorderColor = Color(0xFFB0BEC5),
                     focusedLabelColor = Color(0xFFB0BEC5),
                     unfocusedLabelColor = Color(0xFFB0BEC5),
-                    focusedContainerColor = Color(0xFF0B0E21),
-                    unfocusedContainerColor = Color(0xFF0B0E21),
+                    focusedContainerColor = Color(0xFA0B0E21),
+                    unfocusedContainerColor = Color(0x22B0BEC5),
                     focusedTextColor = Color(0xFFB0BEC5),
                     unfocusedTextColor = Color(0xFFB0BEC5)
                 )
@@ -136,16 +171,22 @@ fun GoalInputScreen() {
             OutlinedTextField(
                 value = goalDescription,
                 onValueChange = { goalDescription = it },
-                label = { Text("目標の詳細")},
-                modifier = Modifier.fillMaxWidth().height(80.dp).padding(bottom = 12.dp), // 高さを指定
+                label = {
+                    Text(
+                        text = "目標の詳細",
+                        fontSize = 10.sp,
+                        modifier = Modifier.background(Color(0x000B0E21)),
+                    )
+                },
+                modifier = Modifier.fillMaxWidth().height(80.dp).padding(bottom = 12.dp),
                 shape = RoundedCornerShape(8.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = Color(0xFFB0BEC5),
                     unfocusedBorderColor = Color(0xFFB0BEC5),
                     focusedLabelColor = Color(0xFFB0BEC5),
                     unfocusedLabelColor = Color(0xFFB0BEC5),
-                    focusedContainerColor = Color(0xFF0B0E21),
-                    unfocusedContainerColor = Color(0xFF0B0E21),
+                    focusedContainerColor = Color(0xFA0B0E21),
+                    unfocusedContainerColor = Color(0x22B0BEC5),
                     focusedTextColor = Color(0xFFB0BEC5),
                     unfocusedTextColor = Color(0xFFB0BEC5)
                 )
@@ -160,7 +201,13 @@ fun GoalInputScreen() {
                     value =  selectedPeriod,
                     onValueChange = {},
                     readOnly = true,
-                    label = {Text("期間を選択", fontSize = 10.sp)},
+                    label = {
+                        Text(
+                            text = "期間を選択",
+                            fontSize = 10.sp,
+                            modifier = Modifier.background(Color(0x000B0E21)),
+                        )
+                    },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
                     modifier = Modifier.menuAnchor().fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
@@ -169,8 +216,8 @@ fun GoalInputScreen() {
                         unfocusedBorderColor = Color(0xFFB0BEC5),
                         focusedLabelColor = Color(0xFFB0BEC5),
                         unfocusedLabelColor = Color(0xFFB0BEC5),
-                        focusedContainerColor = Color(0xFF0B0E21),
-                        unfocusedContainerColor = Color(0xFF0B0E21),
+                        focusedContainerColor = Color(0x22B0BEC5),
+                        unfocusedContainerColor = Color(0x000B0E21),
                         focusedTextColor = Color(0xFFB0BEC5),
                         unfocusedTextColor = Color(0xFFB0BEC5)
                     )
@@ -198,17 +245,28 @@ fun GoalInputScreen() {
                     } else if (goalDescription.isBlank()) {
                         Toast.makeText(context, "目標の詳細を入力してください", Toast.LENGTH_SHORT).show()
                     } else {
-                        val message = "目標:\nタイトル: $goalTitle\n詳細: $goalDescription\n期間: $selectedPeriod"
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                        val sharedPref = context.getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
+
+                        val existingGoals = sharedPref.getStringSet("goals", mutableSetOf())?.toMutableSet() ?: mutableSetOf()
+                        val goalData = "$goalTitle|$goalDescription|$selectedPeriod"
+                        existingGoals.add(goalData)
+
+                        with(sharedPref.edit()) {
+                            putStringSet("goals", existingGoals)
+                            apply()
+                        }
+                        Toast.makeText(context, "目標が追加されました", Toast.LENGTH_SHORT).show()
 
                         // 入力フィールドをクリア
                         goalTitle = ""
                         goalDescription = ""
                         selectedPeriod = periods[0] // 最初の期間に戻す
+                        val intent = Intent(context, GoalManagementActivity::class.java)
+                        context.startActivity(intent)
                     }
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xAAB0BEC5)),
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(text = "目標を追加", color = Color.Black)
