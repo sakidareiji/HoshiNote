@@ -98,8 +98,8 @@ fun GoalManagement(onBackClick: () -> Unit = {}) {
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
 
-                val sharedPref = context.getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
-                val savedGoals = sharedPref.getStringSet("goals", emptySet()) ?: emptySet()
+                val goalSharedPref = context.getSharedPreferences("goal_prefs", Context.MODE_PRIVATE)
+                val savedGoals = goalSharedPref.getStringSet("goals", emptySet()) ?: emptySet()
 
                 if (savedGoals.isEmpty()) {
                     Text(

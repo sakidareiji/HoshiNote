@@ -29,6 +29,9 @@
         <activity
             android:name=".SettingActivity"
             android:exported="true" />
+        <activity
+        android:name=".GoalManagementActivity"
+        android:exported="true" />
 
     </application>
 
