@@ -56,7 +56,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.hoshinote.navigation.Routes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
@@ -90,18 +89,18 @@ fun MainNavigation(){
 
     NavHost(
         navController = navController,
-        startDestination = Routes.UserRegistration
+        startDestination = "userRegistration"
     ){
-        composable<Routes.UserRegistration>{
+        composable("userRegistration"){
             UserRegistrationScreen(navController)
         }
-        composable<Routes.GoalSetting>{
+        composable("goalSetting"){
             GoalSettingScreen(navController)
         }
-        composable<Routes.GoalManagement>{
+        composable("goalManagement"){
             GoalManagementScreen(navController)
         }
-        composable<Routes.Setting>{
+        composable("setting"){
             SettingScreen(navController)
         }
     }
@@ -177,7 +176,7 @@ fun UserRegistrationScreen(navController: NavHostController){
     ){
         CustomHeader(
             onSettingsClick = {
-                navController.navigate(Routes.Setting)
+                navController.navigate("setting")
             }
         )
 
@@ -251,7 +250,7 @@ fun UserRegistrationScreen(navController: NavHostController){
                                 "ユーザー名が登録されました",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            navController.navigate(Routes.GoalSetting)
+                            navController.navigate("goalSetting")
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -284,7 +283,7 @@ fun GoalSettingScreen(navController: NavHostController){
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate(Routes.Setting)
+                navController.navigate("setting")
             }
         )
 
@@ -416,7 +415,7 @@ fun GoalSettingScreen(navController: NavHostController){
                             goalDescription = ""
                             selectedPeriod = periods[0]
                             
-                            navController.navigate(Routes.GoalManagement)
+                            navController.navigate("goalManagement")
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -450,7 +449,7 @@ fun GoalManagementScreen(navController: NavHostController) {
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate(Routes.Setting)
+                navController.navigate("setting")
             }
         )
 
@@ -535,7 +534,7 @@ fun GoalManagementScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    navController.navigate(Routes.GoalSetting)
+                    navController.navigate("goalSetting")
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5)),
                 shape = RoundedCornerShape(8.dp),
