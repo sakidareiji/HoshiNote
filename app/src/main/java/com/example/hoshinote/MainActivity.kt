@@ -117,7 +117,7 @@ fun CustomHeader(
             .fillMaxWidth()
             .statusBarsPadding()
             .height(56.dp)
-            .background(Color(0xd00B0E21))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.82f))
             .padding(horizontal = 16.dp)
 
     ) {
@@ -129,14 +129,14 @@ fun CustomHeader(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "戻る",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
 
         Text(
             text = "HoshiNote",
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
@@ -150,7 +150,7 @@ fun CustomHeader(
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "設定",
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
@@ -184,7 +184,7 @@ fun UserRegistrationScreen(navController: NavHostController){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFA0B0E21))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(20.dp, 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
@@ -202,14 +202,14 @@ fun UserRegistrationScreen(navController: NavHostController){
                 text = "ユーザー情報登録",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFFB0BEC5),
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 30.dp)
             )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = Color(0xFF0B0E21),
+                        color = MaterialTheme.colorScheme.surface,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .padding(20.dp, 5.dp)
@@ -221,14 +221,14 @@ fun UserRegistrationScreen(navController: NavHostController){
                     modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFB0BEC5),
-                        unfocusedBorderColor = Color(0xFFB0BEC5),
-                        focusedLabelColor = Color(0xFFB0BEC5),
-                        unfocusedLabelColor = Color(0xFFB0BEC5),
-                        focusedContainerColor = Color(0xFF0B0E21),
-                        unfocusedContainerColor = Color(0xFF0B0E21),
-                        focusedTextColor = Color(0xFFB0BEC5),
-                        unfocusedTextColor = Color(0xFFB0BEC5)
+                        focusedBorderColor = MaterialTheme.colorScheme.outline,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                        focusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurface,
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
                 Button(
@@ -255,10 +255,10 @@ fun UserRegistrationScreen(navController: NavHostController){
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5)),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.outline),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = "ユーザネームを登録", color = Color.Black)
+                    Text(text = "ユーザネームを登録", color = MaterialTheme.colorScheme.onSecondary)
                 }
             }
         }
@@ -291,7 +291,7 @@ fun GoalSettingScreen(navController: NavHostController){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFA0B0E21))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
@@ -300,7 +300,7 @@ fun GoalSettingScreen(navController: NavHostController){
                 text = "こんにちは、${username}さん！",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-                color = Color(0xFFB0BEC5),
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             Text(
@@ -457,7 +457,7 @@ fun GoalManagementScreen(navController: NavHostController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFA0B0E21))
+                .background(MaterialTheme.colorScheme.background)
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -501,7 +501,7 @@ fun GoalManagementScreen(navController: NavHostController) {
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFF1A1A2E)
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                                 ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
@@ -524,7 +524,7 @@ fun GoalManagementScreen(navController: NavHostController) {
                                     Text(
                                         text = "期間: $period",
                                         fontSize = 12.sp,
-                                        color = Color(0xFF90A4AE)
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             }
@@ -541,7 +541,7 @@ fun GoalManagementScreen(navController: NavHostController) {
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.padding(top = 16.dp)
             ) {
-                Text(text = "新しい目標を設定", color = Color.Black)
+                Text(text = "新しい目標を設定", color = MaterialTheme.colorScheme.onSecondary)
             }
         }
     }
@@ -566,7 +566,7 @@ fun SettingScreen(navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .background(color = Color(0xFA0B0E21))
+                    .background(color = MaterialTheme.colorScheme.background)
             ) {
                 Text(
                     text = "ユーザーネーム変更",
