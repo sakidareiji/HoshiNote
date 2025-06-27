@@ -56,6 +56,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.hoshinote.navigation.Routes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
@@ -64,26 +65,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.statusBarsPadding
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
-import androidx.activity.SystemBarStyle
-import androidx.compose.ui.graphics.toArgb
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(
-                scrim = Color(0xAAB0BEC5).toArgb()
-                ),
-            navigationBarStyle = SystemBarStyle.dark(
-                scrim = Color(0xd00B0E21).toArgb()
-            )
-        )
+        enableEdgeToEdge()
         setContent {
             HoshiNoteTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFA0B0E21),
+                    color = MaterialTheme.colorScheme.background,
                 ){
                     MainNavigation()
                 }
@@ -98,18 +90,18 @@ fun MainNavigation(){
 
     NavHost(
         navController = navController,
-        startDestination = "userRegistration"
+        startDestination = Routes.UserRegistration
     ){
-        composable("userRegistration"){
+        composable<Routes.UserRegistration>{
             UserRegistrationScreen(navController)
         }
-        composable("goalSetting"){
+        composable<Routes.GoalSetting>{
             GoalSettingScreen(navController)
         }
-        composable("goalManagement"){
+        composable<Routes.GoalManagement>{
             GoalManagementScreen(navController)
         }
-        composable("setting"){
+        composable<Routes.Setting>{
             SettingScreen(navController)
         }
     }
@@ -125,7 +117,7 @@ fun CustomHeader(
             .fillMaxWidth()
             .statusBarsPadding()
             .height(56.dp)
-            .background(Color(0xAAB0BEC5))
+            .background(Color(0xd00B0E21))
             .padding(horizontal = 16.dp)
 
     ) {
@@ -185,7 +177,7 @@ fun UserRegistrationScreen(navController: NavHostController){
     ){
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -259,7 +251,7 @@ fun UserRegistrationScreen(navController: NavHostController){
                                 "ユーザー名が登録されました",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            navController.navigate("goalSetting")
+                            navController.navigate(Routes.GoalSetting)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -285,14 +277,14 @@ fun GoalSettingScreen(navController: NavHostController){
     var goalDescription by remember { mutableStateOf("")}
     var expanded by remember { mutableStateOf(false)}
     val periods = stringArrayResource(id = R.array.goal_periods)
-    var selectedPeriod by remember { mutableStateOf(if (periods.isNotEmpty()) periods[0] else "") }
+    var selectedPeriod by remember { mutableStateOf(periods[0]) }
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -412,19 +404,19 @@ fun GoalSettingScreen(navController: NavHostController){
                             val existingGoals = goalSharedPref.getStringSet("goals", mutableSetOf()) ?: mutableSetOf()
                             val updatedGoals = existingGoals.toMutableSet()
                             updatedGoals.add(goalString)
-                            
+
                             with(goalSharedPref.edit()) {
                                 putStringSet("goals", updatedGoals)
                                 apply()
                             }
-                            
+
                             Toast.makeText(context, "目標が追加されました！", Toast.LENGTH_SHORT).show()
-                            
+
                             goalTitle = ""
                             goalDescription = ""
-                            selectedPeriod = if (periods.isNotEmpty()) periods[0] else ""
-                            
-                            navController.navigate("goalManagement")
+                            selectedPeriod = periods[0]
+
+                            navController.navigate(Routes.GoalManagement)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -447,12 +439,18 @@ fun GoalManagementScreen(navController: NavHostController) {
     val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", "ユーザー") ?: "ユーザー"
 
+    var goalTitle by remember { mutableStateOf("") }
+    var goalDescription by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    val periods = stringArrayResource(id = R.array.goal_periods)
+    var selectedPeriod by remember { mutableStateOf(periods[0]) }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -537,7 +535,7 @@ fun GoalManagementScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    navController.navigate("goalSetting")
+                    navController.navigate(Routes.GoalSetting)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5)),
                 shape = RoundedCornerShape(8.dp),
@@ -552,20 +550,24 @@ fun GoalManagementScreen(navController: NavHostController) {
 @Composable
 fun SettingScreen(navController: NavHostController) {
     var username by remember { mutableStateOf("") }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        CustomHeader(
-            showBackButton = true,
-            onBackClick = { navController.popBackStack() }
-        )
-        
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            CustomHeader(
+                showBackButton = true,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+    ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color(0xFA0B0E21))
-                .padding(20.dp)
+            modifier = Modifier.fillMaxSize(),
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .background(color = Color(0xFA0B0E21))
+            ) {
                 Text(
                     text = "ユーザーネーム変更",
                     fontSize = 14.sp,
@@ -587,9 +589,9 @@ fun SettingScreen(navController: NavHostController) {
                         unfocusedContainerColor = Color(0xFF0B0E21),
                         focusedTextColor = Color(0xFFB0BEC5),
                         unfocusedTextColor = Color(0xFFB0BEC5)
+                    )
                 )
-            )
+            }
         }
     }
 }
-
