@@ -414,7 +414,11 @@ fun GoalSettingScreen(navController: NavHostController){
 
                             goalTitle = ""
                             goalDescription = ""
-                            selectedPeriod = periods[0]
+                            if (periods.isNotEmpty()) {
+                                selectedPeriod = periods[0]
+                            } else {
+                                Toast.makeText(context, "目標期間が設定されていません。設定画面から目標期間を設定してください。", Toast.LENGTH_SHORT).show()
+                            }
 
                             navController.navigate(Routes.GoalManagement)
                         }
