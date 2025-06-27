@@ -414,7 +414,7 @@ fun GoalSettingScreen(navController: NavHostController){
 
                             goalTitle = ""
                             goalDescription = ""
-                            selectedPeriod = periods[0]
+                            selectedPeriod = if (periods.isNotEmpty()) periods[0] else ""
 
                             navController.navigate(Routes.GoalManagement)
                         }
