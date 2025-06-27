@@ -64,12 +64,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.statusBarsPadding
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
+import androidx.activity.SystemBarStyle
+import androidx.compose.ui.graphics.toArgb
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(
+                scrim = Color(0xAAB0BEC5).toArgb()
+                ),
+            navigationBarStyle = SystemBarStyle.dark(
+                scrim = Color(0xd00B0E21).toArgb()
+            )
+        )
         setContent {
             HoshiNoteTheme {
                 Surface(
@@ -116,7 +125,7 @@ fun CustomHeader(
             .fillMaxWidth()
             .statusBarsPadding()
             .height(56.dp)
-            .background(Color(0xd00B0E21))
+            .background(Color(0xAAB0BEC5))
             .padding(horizontal = 16.dp)
 
     ) {
@@ -276,7 +285,7 @@ fun GoalSettingScreen(navController: NavHostController){
     var goalDescription by remember { mutableStateOf("")}
     var expanded by remember { mutableStateOf(false)}
     val periods = stringArrayResource(id = R.array.goal_periods)
-    var selectedPeriod by remember { mutableStateOf(periods[0]) }
+    var selectedPeriod by remember { mutableStateOf(if (periods.isNotEmpty()) periods[0] else "") }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -413,7 +422,7 @@ fun GoalSettingScreen(navController: NavHostController){
                             
                             goalTitle = ""
                             goalDescription = ""
-                            selectedPeriod = periods[0]
+                            selectedPeriod = if (periods.isNotEmpty()) periods[0] else ""
                             
                             navController.navigate("goalManagement")
                         }
@@ -437,12 +446,6 @@ fun GoalManagementScreen(navController: NavHostController) {
 
     val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", "ユーザー") ?: "ユーザー"
-
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    val periods = stringArrayResource(id = R.array.goal_periods)
-    var selectedPeriod by remember { mutableStateOf(periods[0]) }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -549,24 +552,20 @@ fun GoalManagementScreen(navController: NavHostController) {
 @Composable
 fun SettingScreen(navController: NavHostController) {
     var username by remember { mutableStateOf("") }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            CustomHeader(
-                showBackButton = true,
-                onBackClick = { navController.popBackStack() }
-            )
-        }
-    ) { innerPadding ->
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CustomHeader(
+            showBackButton = true,
+            onBackClick = { navController.popBackStack() }
+        )
+        
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFA0B0E21))
+                .padding(20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .background(color = Color(0xFA0B0E21))
-            ) {
                 Text(
                     text = "ユーザーネーム変更",
                     fontSize = 14.sp,
@@ -588,9 +587,9 @@ fun SettingScreen(navController: NavHostController) {
                         unfocusedContainerColor = Color(0xFF0B0E21),
                         focusedTextColor = Color(0xFFB0BEC5),
                         unfocusedTextColor = Color(0xFFB0BEC5)
-                    )
                 )
-            }
+            )
         }
     }
 }
+
