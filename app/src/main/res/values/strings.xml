@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">目標トラッカー</string>
+    <string name="app_name">HoshiNote</string>
     <string name="character_content_description">サポートAIキャラクター</string>
     <string-array name="goal_periods">
         <item>1週間</item>
