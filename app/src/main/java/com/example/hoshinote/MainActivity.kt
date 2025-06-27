@@ -56,6 +56,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.hoshinote.navigation.Routes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
@@ -74,7 +75,7 @@ class MainActivity : ComponentActivity() {
             HoshiNoteTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFA0B0E21),
+                    color = MaterialTheme.colorScheme.background,
                 ){
                     MainNavigation()
                 }
@@ -89,18 +90,18 @@ fun MainNavigation(){
 
     NavHost(
         navController = navController,
-        startDestination = "userRegistration"
+        startDestination = Routes.UserRegistration
     ){
-        composable("userRegistration"){
+        composable<Routes.UserRegistration>{
             UserRegistrationScreen(navController)
         }
-        composable("goalSetting"){
+        composable<Routes.GoalSetting>{
             GoalSettingScreen(navController)
         }
-        composable("goalManagement"){
+        composable<Routes.GoalManagement>{
             GoalManagementScreen(navController)
         }
-        composable("setting"){
+        composable<Routes.Setting>{
             SettingScreen(navController)
         }
     }
@@ -176,7 +177,7 @@ fun UserRegistrationScreen(navController: NavHostController){
     ){
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -250,7 +251,7 @@ fun UserRegistrationScreen(navController: NavHostController){
                                 "ユーザー名が登録されました",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            navController.navigate("goalSetting")
+                            navController.navigate(Routes.GoalSetting)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -283,7 +284,7 @@ fun GoalSettingScreen(navController: NavHostController){
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -403,19 +404,19 @@ fun GoalSettingScreen(navController: NavHostController){
                             val existingGoals = goalSharedPref.getStringSet("goals", mutableSetOf()) ?: mutableSetOf()
                             val updatedGoals = existingGoals.toMutableSet()
                             updatedGoals.add(goalString)
-                            
+
                             with(goalSharedPref.edit()) {
                                 putStringSet("goals", updatedGoals)
                                 apply()
                             }
-                            
+
                             Toast.makeText(context, "目標が追加されました！", Toast.LENGTH_SHORT).show()
-                            
+
                             goalTitle = ""
                             goalDescription = ""
                             selectedPeriod = periods[0]
-                            
-                            navController.navigate("goalManagement")
+
+                            navController.navigate(Routes.GoalManagement)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -449,7 +450,7 @@ fun GoalManagementScreen(navController: NavHostController) {
     ) {
         CustomHeader(
             onSettingsClick = {
-                navController.navigate("setting")
+                navController.navigate(Routes.Setting)
             }
         )
 
@@ -534,7 +535,7 @@ fun GoalManagementScreen(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    navController.navigate("goalSetting")
+                    navController.navigate(Routes.GoalSetting)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB0BEC5)),
                 shape = RoundedCornerShape(8.dp),
