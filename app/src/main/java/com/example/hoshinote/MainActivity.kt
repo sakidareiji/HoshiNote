@@ -438,11 +438,11 @@ fun GoalManagementScreen(navController: NavHostController) {
     val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     val username = sharedPref.getString("username", "ユーザー") ?: "ユーザー"
 
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    val periods = stringArrayResource(id = R.array.goal_periods)
-    var selectedPeriod by remember { mutableStateOf(periods[0]) }
+//    var goalTitle by remember { mutableStateOf("") }
+//    var goalDescription by remember { mutableStateOf("") }
+//    var expanded by remember { mutableStateOf(false) }
+//    val periods = stringArrayResource(id = R.array.goal_periods)
+//    var selectedPeriod by remember { mutableStateOf(periods[0]) }
 
     Column(
         modifier = Modifier.fillMaxSize()
