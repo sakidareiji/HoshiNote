@@ -18,4 +18,8 @@ sealed class Routes {
 
     @Serializable
     data object ExplorationRecord : Routes()
+
+    @Serializable
+
+    data object DailyEffort : Routes()
 }

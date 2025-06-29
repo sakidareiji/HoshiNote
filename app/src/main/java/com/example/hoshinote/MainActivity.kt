@@ -22,14 +22,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
+import com.example.hoshinote.screen.DailyEffortScreen
 import com.example.hoshinote.screen.ExplorationRecordScreen
 import com.example.hoshinote.screen.GoalManagementScreen
 import com.example.hoshinote.screen.GoalSettingScreen
@@ -69,6 +72,7 @@ fun MainNavigation(){
     val bottomNavItems = listOf(
         BottomNavItem(Routes.GoalManagement, Icons.Default.Home, "ホーム"),
         BottomNavItem(Routes.ExplorationRecord, Icons.Default.Star, "探索記録"),
+        BottomNavItem(Routes.DailyEffort, Icons.Default.Edit, "今日の頑張り"),
         BottomNavItem(Routes.Setting, Icons.Default.Settings,"設定" )
     )
 
@@ -107,7 +111,10 @@ fun MainNavigation(){
                                 )
                             },
                             label = {
-                                Text(text = item.label)
+                                Text(
+                                    text = item.label,
+                                    fontSize = 10.sp,
+                                )
                             }
                         )
                     }
@@ -138,6 +145,9 @@ fun MainNavigation(){
             }
             composable<Routes.ExplorationRecord>{
                 ExplorationRecordScreen(navController)
+            }
+            composable<Routes.DailyEffort>{
+                DailyEffortScreen(navController)
             }
         }
     }
