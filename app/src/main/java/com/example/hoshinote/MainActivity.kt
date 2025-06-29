@@ -101,8 +101,8 @@ fun MainNavigation(){
     val currentRoute = currentBackStackEntry.value?.destination?.route
 
     val bottomNavItems = listOf(
-        BottomNavItem(Routes.ExplorationRecord, Icons.Default.Star, "探索記録"),
         BottomNavItem(Routes.GoalManagement, Icons.Default.Home, "ホーム"),
+        BottomNavItem(Routes.ExplorationRecord, Icons.Default.Star, "探索記録"),
         BottomNavItem(Routes.Setting, Icons.Default.Settings,"設定" )
     )
 
