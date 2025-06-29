@@ -58,13 +58,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.hoshinote.navigation.Routes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.navigation.compose.currentBackStackEntryAsState
+
+data class BottomNavItem(
+    val route: Routes,
+    val icon: ImageVector,
+    val label: String
+)
 
 
 class MainActivity : ComponentActivity() {
@@ -87,53 +97,91 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainNavigation(){
     val navController= rememberNavController()
+    val currentBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry.value?.destination?.route
 
-    NavHost(
-        navController = navController,
-        startDestination = Routes.UserRegistration
-    ){
-        composable<Routes.UserRegistration>{
-            UserRegistrationScreen(navController)
+    val bottomNavItems = listOf(
+        BottomNavItem(Routes.ExplorationRecord, Icons.Default.Star, "探索記録"),
+        BottomNavItem(Routes.GoalManagement, Icons.Default.Home, "ホーム"),
+        BottomNavItem(Routes.Setting, Icons.Default.Settings,"設定" )
+    )
+
+    val showBottomBar = currentRoute != Routes.UserRegistration::class.qualifiedName
+
+    Scaffold(
+        bottomBar = {
+            if (showBottomBar) {
+                NavigationBar(
+                    containerColor = Color(0xFF0B0E21)
+                ) {
+                    bottomNavItems.forEach { item ->
+                        val isSelected = currentRoute == item.route::class.qualifiedName
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color.Black,
+                                selectedTextColor = Color(0xFFB0BEC5),
+                                indicatorColor = Color(0xFFB0BEC5),
+                                unselectedIconColor = Color(0xFF757575),
+                                unselectedTextColor = Color(0xFF757575)
+                            ),
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = item.label
+                                )
+                            },
+                            label = {
+                                Text(text = item.label)
+                            }
+                        )
+                    }
+                }
+            }
         }
-        composable<Routes.GoalSetting>{
-            GoalSettingScreen(navController)
-        }
-        composable<Routes.GoalManagement>{
-            GoalManagementScreen(navController)
-        }
-        composable<Routes.Setting>{
-            SettingScreen(navController)
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = Routes.UserRegistration,
+            modifier = Modifier.padding(paddingValues)
+        ){
+            composable<Routes.UserRegistration>{
+                UserRegistrationScreen(navController)
+            }
+            composable<Routes.GoalSetting>{
+                GoalSettingScreen(navController)
+            }
+            composable<Routes.GoalManagement>{
+                GoalManagementScreen(navController)
+            }
+            composable<Routes.Setting>{
+                SettingScreen(navController)
+            }
+            composable<Routes.ExplorationRecord>{
+                ExplorationRecordScreen(navController)
+            }
         }
     }
 }
 @Composable
-fun CustomHeader(
-    onSettingsClick: () -> Unit = {},
-    onBackClick: (() -> Unit)? = null,
-    showBackButton: Boolean = false
-) {
+fun CustomHeader(){
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .statusBarsPadding()
             .height(56.dp)
             .background(Color(0xd00B0E21))
             .padding(horizontal = 16.dp)
 
     ) {
-        if (showBackButton && onBackClick != null) {
-            IconButton(
-                onClick = onBackClick,
-                modifier = Modifier.align(Alignment.CenterStart)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "戻る",
-                    tint = Color.White
-                )
-            }
-        }
-
         Text(
             text = "HoshiNote",
             color = Color.White,
@@ -141,19 +189,6 @@ fun CustomHeader(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
         )
-
-        if (!showBackButton) {
-            IconButton(
-                onClick = onSettingsClick,
-                modifier = Modifier.align(Alignment.CenterEnd)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "設定",
-                    tint = Color.White
-                )
-            }
-        }
     }
 }
 
@@ -175,11 +210,7 @@ fun UserRegistrationScreen(navController: NavHostController){
     Column(
         modifier = Modifier.fillMaxSize()
     ){
-        CustomHeader(
-            onSettingsClick = {
-                navController.navigate(Routes.Setting)
-            }
-        )
+        CustomHeader()
 
         Column(
             modifier = Modifier
@@ -251,7 +282,7 @@ fun UserRegistrationScreen(navController: NavHostController){
                                 "ユーザー名が登録されました",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            navController.navigate(Routes.GoalSetting)
+                            navController.navigate(Routes.GoalManagement)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -282,11 +313,7 @@ fun GoalSettingScreen(navController: NavHostController){
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        CustomHeader(
-            onSettingsClick = {
-                navController.navigate(Routes.Setting)
-            }
-        )
+        CustomHeader()
 
         Column(
             modifier = Modifier
@@ -297,19 +324,11 @@ fun GoalSettingScreen(navController: NavHostController){
             verticalArrangement = Arrangement.Top
         ){
             Text(
-                text = "こんにちは、${username}さん！",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFFB0BEC5),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            Text(
                 text = "目標設定",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFB0BEC5),
-                modifier = Modifier.padding(bottom = 24.dp)
-
+                modifier = Modifier.padding(bottom = 10.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             Column(
@@ -452,11 +471,7 @@ fun GoalManagementScreen(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        CustomHeader(
-            onSettingsClick = {
-                navController.navigate(Routes.Setting)
-            }
-        )
+        CustomHeader()
 
         Column(
             modifier = Modifier
@@ -552,50 +567,67 @@ fun GoalManagementScreen(navController: NavHostController) {
 }
 
 @Composable
-fun SettingScreen(navController: NavHostController) {
-    var username by remember { mutableStateOf("") }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            CustomHeader(
-                showBackButton = true,
-                onBackClick = { navController.popBackStack() }
-            )
-        }
-    ) { innerPadding ->
+fun ExplorationRecordScreen(navController: NavHostController) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CustomHeader()
+        
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFA0B0E21))
+                .padding(20.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .background(color = Color(0xFA0B0E21))
-            ) {
-                Text(
-                    text = "ユーザーネーム変更",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFFB0BEC5),
-                )
-                OutlinedTextField(
-                    value = username,
-                    onValueChange = { username = it },
-                    label = { Text("ユーザーネーム") },
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFB0BEC5),
-                        unfocusedBorderColor = Color(0xFFB0BEC5),
-                        focusedLabelColor = Color(0xFFB0BEC5),
-                        unfocusedLabelColor = Color(0xFFB0BEC5),
-                        focusedContainerColor = Color(0xFF0B0E21),
-                        unfocusedContainerColor = Color(0xFF0B0E21),
-                        focusedTextColor = Color(0xFFB0BEC5),
-                        unfocusedTextColor = Color(0xFFB0BEC5)
-                    )
-                )
-            }
+            Text(
+                text = "探索記録",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFB0BEC5),
+                modifier = Modifier.padding(bottom = 20.dp)
+            )
         }
     }
 }
+
+@Composable
+fun SettingScreen(navController: NavHostController) {
+    var username by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CustomHeader()
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color(0xFA0B0E21))
+                .padding(20.dp)
+        ) {
+            Text(
+                text = "ユーザーネーム変更",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFFB0BEC5),
+            )
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("ユーザーネーム") },
+                modifier = Modifier.fillMaxWidth().padding(bottom = 14.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color(0xFFB0BEC5),
+                    unfocusedBorderColor = Color(0xFFB0BEC5),
+                    focusedLabelColor = Color(0xFFB0BEC5),
+                    unfocusedLabelColor = Color(0xFFB0BEC5),
+                    focusedContainerColor = Color(0xFF0B0E21),
+                    unfocusedContainerColor = Color(0xFF0B0E21),
+                    focusedTextColor = Color(0xFFB0BEC5),
+                    unfocusedTextColor = Color(0xFFB0BEC5)
+                )
+            )
+        }
+    }
+}
+

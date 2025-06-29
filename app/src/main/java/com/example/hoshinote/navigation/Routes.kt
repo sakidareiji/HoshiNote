@@ -15,4 +15,7 @@ sealed class Routes {
 
     @Serializable
     data object Setting : Routes()
+
+    @Serializable
+    data object ExplorationRecord : Routes()
 }
