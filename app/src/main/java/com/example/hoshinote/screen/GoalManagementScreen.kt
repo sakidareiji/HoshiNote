@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.hoshinote.components.CustomHeader
-import com.example.hoshinote.navigation.Routes
 import com.example.hoshinote.R
 
 @Composable
