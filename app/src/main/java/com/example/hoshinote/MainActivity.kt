@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
             HoshiNoteTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFF0B0E21),
+                    color = MaterialTheme.colorScheme.background,
                 ){
                     MainNavigation()
                 }
@@ -79,7 +79,7 @@ fun MainNavigation(){
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar(
-                    containerColor = Color(0xFF0B0E21)
+                    containerColor = Color(0xd00B0E21)
                 ) {
                     bottomNavItems.forEach { item ->
                         val isSelected = currentRoute == item.route::class.qualifiedName
