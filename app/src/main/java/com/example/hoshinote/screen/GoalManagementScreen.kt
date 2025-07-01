@@ -16,35 +16,20 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.hoshinote.components.CustomHeader
-import com.example.hoshinote.R
 import com.example.hoshinote.navigation.Routes
 
 @Composable
 fun GoalManagementScreen(navController: NavHostController) {
     val context = LocalContext.current
-
-    val sharedPref = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    val username = sharedPref.getString("username", "ユーザー") ?: "ユーザー"
-
-    var goalTitle by remember { mutableStateOf("") }
-    var goalDescription by remember { mutableStateOf("") }
-    var expanded by remember { mutableStateOf(false) }
-    val periods = stringArrayResource(id = R.array.goal_periods)
-    var selectedPeriod by remember { mutableStateOf(periods[0]) }
 
     Column(
         modifier = Modifier.fillMaxSize()
