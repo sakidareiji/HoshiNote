@@ -23,7 +23,7 @@ import androidx.navigation.NavHostController
 import com.example.hoshinote.components.CustomHeader
 
 @Composable
-fun SettingScreen(navController: NavHostController) {
+fun SettingScreen() {
     var username by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize()

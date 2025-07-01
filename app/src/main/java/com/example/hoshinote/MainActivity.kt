@@ -28,6 +28,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
 import com.example.hoshinote.screen.ExplorationRecordScreen
@@ -134,7 +135,7 @@ fun MainNavigation(){
                 GoalManagementScreen(navController)
             }
             composable<Routes.Setting>{
-                SettingScreen(navController)
+                SettingScreen()
             }
             composable<Routes.ExplorationRecord>{
                 ExplorationRecordScreen(navController)
