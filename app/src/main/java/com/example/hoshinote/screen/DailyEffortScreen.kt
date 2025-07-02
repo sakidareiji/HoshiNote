@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hoshinote.components.CustomHeader
 
 @Composable
 fun DailyEffortScreen() {
@@ -36,7 +35,6 @@ fun DailyEffortScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        CustomHeader()
 
         Column(
             modifier = Modifier

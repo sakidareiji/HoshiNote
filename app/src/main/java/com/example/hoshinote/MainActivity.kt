@@ -23,12 +23,16 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.hoshinote.ui.theme.HoshiNoteTheme
@@ -39,6 +43,8 @@ import com.example.hoshinote.screen.GoalSettingScreen
 import com.example.hoshinote.screen.SettingScreen
 import com.example.hoshinote.screen.UserRegistrationScreen
 
+
+
 data class BottomNavItem(
     val route: Routes,
     val icon: ImageVector,
@@ -48,12 +54,14 @@ data class BottomNavItem(
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+
         setContent {
             HoshiNoteTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ){
                     MainNavigation()
@@ -63,6 +71,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavigation(){
     val navController= rememberNavController()
@@ -79,10 +88,25 @@ fun MainNavigation(){
     val showBottomBar = currentRoute != Routes.UserRegistration::class.qualifiedName
 
     Scaffold(
-        bottomBar = {
+        topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "HoshiNote",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xd00B0E21)
+                    )
+                )
+            },
+            bottomBar = {
             if (showBottomBar) {
                 NavigationBar(
-                    containerColor = Color(0xd00B0E21)
+                    containerColor = Color(0xFF0B0E21)
                 ) {
                     bottomNavItems.forEach { item ->
                         val isSelected = currentRoute == item.route::class.qualifiedName
@@ -122,36 +146,36 @@ fun MainNavigation(){
             }
         }
     ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Routes.UserRegistration,
-            modifier = Modifier.padding(paddingValues),
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None }
-        ){
-            composable<Routes.UserRegistration>{
-                UserRegistrationScreen(navController)
-            }
-            composable<Routes.GoalSetting>{
-                GoalSettingScreen(navController)
-            }
-            composable<Routes.GoalManagement>{
-                GoalManagementScreen(navController)
-            }
-            composable<Routes.Setting>{
-                SettingScreen()
-            }
-            composable<Routes.ExplorationRecord>{
-                ExplorationRecordScreen(navController)
-            }
-            composable<Routes.DailyEffort>{
-                DailyEffortScreen(navController)
+            NavHost(
+                navController = navController,
+                startDestination = Routes.UserRegistration,
+                modifier = Modifier.padding(paddingValues),
+                enterTransition = { EnterTransition.None },
+                exitTransition = { ExitTransition.None },
+                popEnterTransition = { EnterTransition.None },
+                popExitTransition = { ExitTransition.None }
+            ){
+                composable<Routes.UserRegistration>{
+                    UserRegistrationScreen(navController)
+                }
+                composable<Routes.GoalSetting>{
+                    GoalSettingScreen(navController)
+                }
+                composable<Routes.GoalManagement>{
+                    GoalManagementScreen(navController)
+                }
+                composable<Routes.Setting>{
+                    SettingScreen()
+                }
+                composable<Routes.ExplorationRecord>{
+                    ExplorationRecordScreen()
+                }
+                composable<Routes.DailyEffort>{
+                    DailyEffortScreen()
+                }
             }
         }
     }
-}
 
 
 

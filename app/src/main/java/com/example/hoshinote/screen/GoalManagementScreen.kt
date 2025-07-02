@@ -24,7 +24,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.hoshinote.components.CustomHeader
 import com.example.hoshinote.navigation.Routes
 
 @Composable
@@ -34,7 +33,6 @@ fun GoalManagementScreen(navController: NavHostController) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        CustomHeader()
 
         Column(
             modifier = Modifier
