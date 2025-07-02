@@ -35,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.hoshinote.components.CustomHeader
 import com.example.hoshinote.R
 import com.example.hoshinote.navigation.Routes
 
@@ -55,18 +54,13 @@ fun UserRegistrationScreen(navController: NavHostController){
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0B0E21))
+            .padding(20.dp, 80.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ){
-        CustomHeader()
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFA0B0E21))
-                .padding(20.dp, 80.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ){
             Image(
                 painter = painterResource(id = R.drawable.robot),
                 contentDescription = stringResource(R.string.character_content_description),
@@ -141,4 +135,3 @@ fun UserRegistrationScreen(navController: NavHostController){
             }
         }
     }
-}
