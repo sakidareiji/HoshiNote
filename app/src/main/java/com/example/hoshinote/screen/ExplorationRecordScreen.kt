@@ -11,11 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.hoshinote.components.CustomHeader
 
 @Composable
-fun ExplorationRecordScreen(navController: NavHostController) {
+fun ExplorationRecordScreen() {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
